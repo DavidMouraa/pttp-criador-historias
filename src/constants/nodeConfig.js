@@ -1,13 +1,14 @@
+import { Position } from "@xyflow/react";
+
 export const NODE_CONFIGS = {
-  textNode: {
+  text: {
     label: "Texto",
-    content: "",
-    actionsKeys: [
-      "OPEN_TEXT_EDITOR",
-      "DELETE_NODE",
-    ],
+    content: "Olá, Mundo!",
     input: [
-      { type: "target", label: "Texto" },
+      { type: "source", position: Position.Right },
+    ],
+    output: [
+      { type: "target", position: Position.Left },
     ],
   }
 }

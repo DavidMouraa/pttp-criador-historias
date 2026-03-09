@@ -1,9 +1,17 @@
-import { Position } from "@xyflow/react"
+import { Position, useInternalNode, useNodeId } from "@xyflow/react"
 import BaseNode from "./BaseNode"
 import PathHandle from "./handles/PathHandle"
 import { CiEdit } from "react-icons/ci";
+import { useEditingNodeStore } from "@/store/useEditingNodeStore";
+import { useEffect } from "react";
 
-export default function TextNode({ data, selected }) {
+export default function TextNode({ id, data, selected }) {
+  const setEditingNode = useEditingNodeStore((state) => state.setEditingNode)
+  const currentNode = useInternalNode(id)
+
+  useEffect(() => {
+    console.log(currentNode)
+  }, [])
 
   return (
     <BaseNode
@@ -23,7 +31,10 @@ export default function TextNode({ data, selected }) {
           type="text" 
           placeholder="Título"
         />
-        <button className="flex justify-center items-center w-full h-5 cursor-pointer rounded-sm bg-flow-node-edit-button-bg text-black">
+        <button 
+          className="flex justify-center items-center w-full h-5 cursor-pointer rounded-sm bg-flow-node-edit-button-bg text-black"
+          onClick={() => setEditingNode(currentNode)}
+        >
           <CiEdit className="text-sm" />
         </button>
       </div>

@@ -15,8 +15,9 @@ import TextNode from "./TextNode"
 import ContextMenu from "./ContextMenu/ContextMenu"
 import ContextMenuItem from "./ContextMenu/ContextMenuItem"
 import ContextMenuTrigger from "./ContextMenu/ContextMenuTrigger"
-import RichTextEditor from "./RichTextEditor"
 import { NODE_CONFIGS } from "@/constants/nodeConfig"
+import { useEditingNodeStore } from "@/store/useEditingNodeStore"
+import RichTextEditor from "./RichTextEditor"
 
 const nodeTypes = {
   text: TextNode,
@@ -24,12 +25,13 @@ const nodeTypes = {
 
 export default function Flow() {
   const [menu, setMenu] = useState(null)
-  const [editingNode, setEditingNode] = useState(null)
 
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
 
   const { screenToFlowPosition } = useReactFlow()
+
+  const editingNode = useEditingNodeStore((state) => state.editingNode)
 
   // Controle do menu de contexto
   const onPaneContextMenu = useCallback((event) => {
@@ -59,23 +61,20 @@ export default function Flow() {
   // Painel
   const addNode = useCallback((x, y, type) => {
     const position = screenToFlowPosition({ x, y })
-    
+    const configs = NODE_CONFIGS[type]
+
     const newNode = {
       id: `node_${Date.now()}`,
       type,
       position,
       data: { 
-        label: type,
-        content: "",
-        inputs: [
-          { id: `in-${Date.now()}`, type: "source", label: "Text", action: (node) => setEditingNode(node) }
-        ]
+        ...configs
       }
     }
     
     setNodes((nodes) => nodes.concat(newNode))
     setMenu(null)
-  }, [screenToFlowPosition, setNodes, setMenu, setEditingNode])
+  }, [screenToFlowPosition, setNodes, setMenu])
   
   // Nodes
   const deleteNode = useCallback((id) => {
@@ -102,7 +101,6 @@ export default function Flow() {
   // Eventos de click
   const onPaneClick = useCallback(() => setMenu(null), [setMenu])
   const onNodeClick = useCallback(() => setMenu(null), [setMenu])
-  const onNodeDoubleClick = useCallback((event, node) => setEditingNode(node))
 
   return (
     <div className="w-full h-full">
@@ -118,7 +116,6 @@ export default function Flow() {
         onNodeContextMenu={onNodeContextMenu}
         onPaneClick={onPaneClick}
         onNodeClick={onNodeClick}
-        onNodeDoubleClick={onNodeDoubleClick}
         fitView
       >
         <Background
