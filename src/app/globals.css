@@ -14,8 +14,10 @@
   --color-flow-node-input-focus-border: #1d1766;
   --color-flow-node-edit-button-bg: #fff;
   
-  /* Cabeçalhos */
+  /* TextNode */
   --color-flow-text-node-header: #1d1766;
+  --color-flow-text-node-border: black;
+  --color-flow-text-selected-node-border: #231b79;
 
   /* Handles */
   --color-flow-handle-path-color: #1d1766;
@@ -23,6 +25,9 @@
   /* Context Menu */
   --color-flow-context-menu-bg: #fff;
   --color-flow-context-menu-hover-text: #413BB8;
+
+  /* Sombras */
+  --shadow-flow-node: 0 0 5px 2px #00000066;
 
   /* Tamanhos de fontes */
   --text-xxs: .55rem;

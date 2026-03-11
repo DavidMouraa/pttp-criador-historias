@@ -11,27 +11,32 @@ import {
   addEdge,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
-import TextNode from "./TextNode"
-import ContextMenu from "./ContextMenu/ContextMenu"
-import ContextMenuItem from "./ContextMenu/ContextMenuItem"
-import ContextMenuTrigger from "./ContextMenu/ContextMenuTrigger"
+import TextNode from "./nodes/TextNode"
+import ContextMenu from "./contextMenu/ContextMenu"
+import ContextMenuItem from "./contextMenu/ContextMenuItem"
+import ContextMenuTrigger from "./contextMenu/ContextMenuTrigger"
+import RichTextEditor from "./RichTextEditor"
 import { NODE_CONFIGS } from "@/constants/nodeConfig"
 import { useEditingNodeStore } from "@/store/useEditingNodeStore"
-import RichTextEditor from "./RichTextEditor"
-
-const nodeTypes = {
-  text: TextNode,
-}
+import { nanoid } from "nanoid"
 
 export default function Flow() {
+  const nodeTypes = {
+    text: TextNode,
+  }
+
+  const initialNodes = [
+    
+  ]
+
   const [menu, setMenu] = useState(null)
 
-  const [nodes, setNodes, onNodesChange] = useNodesState([])
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
 
   const { screenToFlowPosition } = useReactFlow()
 
-  const editingNode = useEditingNodeStore((state) => state.editingNode)
+  const { editingNode, clearEditingNode } = useEditingNodeStore()
 
   // Controle do menu de contexto
   const onPaneContextMenu = useCallback((event) => {
@@ -64,7 +69,7 @@ export default function Flow() {
     const configs = NODE_CONFIGS[type]
 
     const newNode = {
-      id: `node_${Date.now()}`,
+      id: `node_${nanoid(10)}`,
       type,
       position,
       data: { 
@@ -154,7 +159,7 @@ export default function Flow() {
           <RichTextEditor
             node={editingNode}
             onSave={(content) => updateNodeData(editingNode.id, content)}
-            onClose={() => setEditingNode(null)}
+            onClose={clearEditingNode}
           />
         )}
 

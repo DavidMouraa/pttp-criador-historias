@@ -1,9 +1,8 @@
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import { IoClose } from "react-icons/io5";
+import Modal from "./Modal"
 
-
-export default function RichTextEditor({ node, onClose, onSave }) {
+export default function RichTextEditor({ node, onSave }) {
   const editor = useEditor({
     extensions: [StarterKit],
     content: node.data.content,
@@ -21,16 +20,8 @@ export default function RichTextEditor({ node, onClose, onSave }) {
   })
 
   return (
-    <div className="z-10 absolute top-1/4 left-1/4 w-96 h-125 rounded-sm bg-white">
-      <div className="flex justify-end bg-flow-node-text-header-bg rounded-t-sm overflow-clip">
-        <button
-          className="h-full cursor-pointer bg-red-500" 
-          onClick={onClose}
-        >
-          <IoClose className="w-5 h-5" />
-        </button>
-      </div>
-      <EditorContent editor={editor} className="h-full" />
-    </div>
+    <Modal>
+      <EditorContent editor={editor} className="h-full rounded-b-sm bg-white" />
+    </Modal>
   )
 }

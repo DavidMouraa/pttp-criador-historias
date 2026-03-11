@@ -1,14 +1,14 @@
-import { Position } from "@xyflow/react";
+import { nanoid } from "nanoid";
 
 export const NODE_CONFIGS = {
   text: {
     label: "Texto",
-    content: "Olá, Mundo!",
-    input: [
-      { type: "source", position: Position.Right },
+    content: "",
+    inputs: [
+      { id: `handle_${nanoid(10)}`, type: "target" },
     ],
-    output: [
-      { type: "target", position: Position.Left },
+    outputs: [
+      { id: `handle_${nanoid(10)}`, type: "source" },
     ],
   }
 }
